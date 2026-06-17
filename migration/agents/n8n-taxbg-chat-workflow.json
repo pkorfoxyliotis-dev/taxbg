@@ -1,0 +1,52 @@
+{
+  "name": "TaxBG — Public Chat",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "taxbg/chat",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "webhook-chat",
+      "name": "Webhook Chat",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [0, 0],
+      "webhookId": "taxbg-chat"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Paste full agent logic from migration/agents/n8n-taxbg-chat-code.js\nconst body = $input.first().json.body ?? $input.first().json;\nconst message = body.message ?? '';\nconst sessionId = body.sessionId ?? 'pub_unknown';\nconst locale = body.locale ?? 'el';\n\n// TODO: call LLM with role-taxbg.md + fetch /api/pricing context\nconst response = locale === 'en'\n  ? 'Thank you for contacting TaxBG. A team member will follow up shortly.'\n  : 'Ευχαριστούμε που επικοινωνήσατε με την TaxBG. Θα επικοινωνήσουμε σύντομα.';\n\nreturn [{ json: { response, sessionId } }];"
+      },
+      "id": "code-agent",
+      "name": "TaxBG Agent",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [220, 0]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ $json }}"
+      },
+      "id": "respond",
+      "name": "Respond",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [440, 0]
+    }
+  ],
+  "connections": {
+    "Webhook Chat": {
+      "main": [[{ "node": "TaxBG Agent", "type": "main", "index": 0 }]]
+    },
+    "TaxBG Agent": {
+      "main": [[{ "node": "Respond", "type": "main", "index": 0 }]]
+    }
+  },
+  "settings": { "executionOrder": "v1" },
+  "meta": {
+    "templateCredsSetupCompleted": true
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "aggregateRating": 5,
+  "reviewCount": 7,
+  "reviews": [
+    {
+      "id": "google-published-1",
+      "author": "Verified client",
+      "rating": 5,
+      "text": "Great accounting service. We set up our company in Bulgaria in just a few days with a 2-hour visit. Thank you! Their support is in English and Greek also.",
+      "relativeTime": "May 2021"
+    }
+  ]
+}

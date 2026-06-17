@@ -1,0 +1,361 @@
+{
+  "rootId": "start",
+  "resultKeys": [
+    "formation",
+    "accounting-services-1-3",
+    "accounting-services-3-20",
+    "accounting-commercial-eu-le20",
+    "accounting-commercial-eu-le20-intrastat",
+    "accounting-commercial-eu-gt20",
+    "accounting-commercial-eu-gt20-intrastat",
+    "accounting-eshop-small",
+    "accounting-eshop-small-ppd",
+    "accounting-eshop-medium",
+    "accounting-eshop-medium-ppd",
+    "accounting-eshop-large",
+    "accounting-eshop-large-ppd",
+    "accounting-import-export",
+    "consult"
+  ],
+  "nodes": [
+    {
+      "id": "start",
+      "type": "question",
+      "titleEl": "Τι χρειάζεστε;",
+      "titleEn": "What do you need?",
+      "choices": [
+        {
+          "labelEl": "Ίδρυση εταιρείας (all‑inclusive)",
+          "labelEn": "Company formation (all-inclusive)",
+          "nextId": "formation-brief"
+        },
+        {
+          "labelEl": "Λογιστική υποστήριξη",
+          "labelEn": "Accounting support",
+          "nextId": "accounting-activity"
+        },
+        {
+          "labelEl": "Ίδρυση + λογιστική",
+          "labelEn": "Formation + accounting",
+          "nextId": "formation-brief-both"
+        }
+      ]
+    },
+    {
+      "id": "formation-brief",
+      "type": "question",
+      "titleEl": "Ίδρυση — all‑inclusive, όχι clickbait",
+      "titleEn": "Formation — all-inclusive, no bait pricing",
+      "bodyEl": "Περιλαμβάνει VIES, VAT number, άνοιγμα τραπεζικού λογαριασμού, AMKA διαχειριστή, εγγραφή στα ασφαλιστικά ταμεία και πλήρη ενεργοποίηση για έκδοση τιμολογίων. Όλα όσα άλλοι χρεώνουν έξτρα.",
+      "bodyEn": "Includes VIES, VAT number, bank account, manager AMKA, social insurance registration and full invoicing activation. Everything others charge extra for.",
+      "choices": [
+        {
+          "labelEl": "Δείξε εύρος τιμής ίδρυσης",
+          "labelEn": "Show formation price range",
+          "nextId": "formation"
+        }
+      ]
+    },
+    {
+      "id": "formation-brief-both",
+      "type": "question",
+      "titleEl": "Ίδρυση + λογιστική",
+      "titleEn": "Formation + accounting",
+      "bodyEl": "Η ίδρυση είναι all‑inclusive (VIES, VAT, τράπεζα, AMKA, ασφαλιστικά, ενεργοποίηση). Στη συνέχεια θα επιλέξετε τύπο λογιστικής.",
+      "bodyEn": "Formation is all-inclusive (VIES, VAT, bank, AMKA, insurance, activation). Next you choose your accounting profile.",
+      "choices": [
+        {
+          "labelEl": "Συνέχεια στη λογιστική",
+          "labelEn": "Continue to accounting",
+          "nextId": "accounting-activity",
+          "flags": { "includesFormation": true }
+        }
+      ]
+    },
+    {
+      "id": "accounting-activity",
+      "type": "question",
+      "titleEl": "Τι κάνει η εταιρεία σας;",
+      "titleEn": "What does your company do?",
+      "choices": [
+        {
+          "labelEl": "Παρέχει υπηρεσίες",
+          "labelEn": "Provides services",
+          "nextId": "services-volume"
+        },
+        {
+          "labelEl": "Εμπορεύεται προϊόντα εντός ΕΕ",
+          "labelEn": "Trades products within the EU",
+          "nextId": "commercial-volume"
+        },
+        {
+          "labelEl": "Ηλεκτρονικό κατάστημα (e‑shop)",
+          "labelEn": "E-commerce store",
+          "nextId": "eshop-size"
+        },
+        {
+          "labelEl": "Εισαγωγές / εξαγωγές (εκτός ΕΕ)",
+          "labelEn": "Import / export (non-EU)",
+          "nextId": "accounting-import-export"
+        }
+      ]
+    },
+    {
+      "id": "services-volume",
+      "type": "question",
+      "titleEl": "Πόσα τιμολόγια τον μήνα;",
+      "titleEn": "How many invoices per month?",
+      "choices": [
+        {
+          "labelEl": "1–3 τιμολόγια (IT, σύμβουλοι, designers, coaches…)",
+          "labelEn": "1–3 invoices (IT, consultants, designers, coaches…)",
+          "nextId": "accounting-services-1-3"
+        },
+        {
+          "labelEl": "3–20 τιμολόγια",
+          "labelEn": "3–20 invoices",
+          "nextId": "accounting-services-3-20"
+        }
+      ]
+    },
+    {
+      "id": "commercial-volume",
+      "type": "question",
+      "titleEl": "Όγκος τιμολογίων (εμπόριο ΕΕ)",
+      "titleEn": "Invoice volume (EU trade)",
+      "choices": [
+        {
+          "labelEl": "Έως 20 τιμολόγια τον μήνα",
+          "labelEn": "Up to 20 invoices per month",
+          "nextId": "commercial-intrastat-le20"
+        },
+        {
+          "labelEl": "Πάνω από 20 τιμολόγια τον μήνα",
+          "labelEn": "More than 20 invoices per month",
+          "nextId": "commercial-intrastat-gt20"
+        }
+      ]
+    },
+    {
+      "id": "commercial-intrastat-le20",
+      "type": "question",
+      "titleEl": "Μετακινήσεις / τρίγωνα EU (Intrastat);",
+      "titleEn": "Movements via Bulgaria or EU triangle (Intrastat)?",
+      "bodyEl": "Θα μετακινείτε προϊόντα μέσω Βουλγαρίας ή θα κάνετε τρίγωνες συναλλαγές (EU triangle); Αν ναι, απαιτείται Intrastat.",
+      "bodyEn": "Will you move goods through Bulgaria or use EU triangle transactions? If yes, Intrastat is required.",
+      "choices": [
+        {
+          "labelEl": "Ναι — χρειάζεται Intrastat",
+          "labelEn": "Yes — Intrastat required",
+          "nextId": "accounting-commercial-eu-le20-intrastat"
+        },
+        {
+          "labelEl": "Όχι",
+          "labelEn": "No",
+          "nextId": "accounting-commercial-eu-le20"
+        }
+      ]
+    },
+    {
+      "id": "commercial-intrastat-gt20",
+      "type": "question",
+      "titleEl": "Μετακινήσεις / τρίγωνα EU (Intrastat);",
+      "titleEn": "Movements via Bulgaria or EU triangle (Intrastat)?",
+      "bodyEl": "Θα μετακινείτε προϊόντα μέσω Βουλγαρίας ή θα κάνετε τρίγωνες συναλλαγές (EU triangle); Αν ναι, απαιτείται Intrastat.",
+      "bodyEn": "Will you move goods through Bulgaria or use EU triangle transactions? If yes, Intrastat is required.",
+      "choices": [
+        {
+          "labelEl": "Ναι — χρειάζεται Intrastat",
+          "labelEn": "Yes — Intrastat required",
+          "nextId": "accounting-commercial-eu-gt20-intrastat"
+        },
+        {
+          "labelEl": "Όχι",
+          "labelEn": "No",
+          "nextId": "accounting-commercial-eu-gt20"
+        }
+      ]
+    },
+    {
+      "id": "eshop-size",
+      "type": "question",
+      "titleEl": "Μέγεθος e‑shop (παραγγελίες/μήνα)",
+      "titleEn": "E-shop size (orders/month)",
+      "choices": [
+        {
+          "labelEl": "Μικρό · 50–80 παραγγελίες",
+          "labelEn": "Small · 50–80 orders",
+          "nextId": "eshop-ppd-small"
+        },
+        {
+          "labelEl": "Μεσαίο · 80–200 παραγγελίες",
+          "labelEn": "Medium · 80–200 orders",
+          "nextId": "eshop-ppd-medium"
+        },
+        {
+          "labelEl": "Μεγάλο · 200+ παραγγελίες",
+          "labelEn": "Large · 200+ orders",
+          "nextId": "eshop-ppd-large"
+        }
+      ]
+    },
+    {
+      "id": "eshop-ppd-small",
+      "type": "question",
+      "titleEl": "Χρησιμοποιείτε PPD;",
+      "titleEn": "Do you use PPD?",
+      "bodyEl": "PPD = παραγγελία από τρίτη χώρα που αποστέλλεται σε άλλη τρίτη χώρα (π.χ. Κίνα → ΗΠΑ μέσω Amazon). Ξεχωριστή λογιστική πολυπλοκότητα.",
+      "bodyEn": "PPD = order from one third country shipped to another (e.g. China → US via Amazon). Separate accounting complexity.",
+      "choices": [
+        {
+          "labelEl": "Ναι — PPD",
+          "labelEn": "Yes — PPD",
+          "nextId": "accounting-eshop-small-ppd"
+        },
+        {
+          "labelEl": "Όχι",
+          "labelEn": "No",
+          "nextId": "accounting-eshop-small"
+        }
+      ]
+    },
+    {
+      "id": "eshop-ppd-medium",
+      "type": "question",
+      "titleEl": "Χρησιμοποιείτε PPD;",
+      "titleEn": "Do you use PPD?",
+      "bodyEl": "PPD = παραγγελία από τρίτη χώρα που αποστέλλεται σε άλλη τρίτη χώρα (π.χ. Κίνα → ΗΠΑ μέσω Amazon).",
+      "bodyEn": "PPD = order from one third country shipped to another (e.g. China → US via Amazon).",
+      "choices": [
+        {
+          "labelEl": "Ναι — PPD",
+          "labelEn": "Yes — PPD",
+          "nextId": "accounting-eshop-medium-ppd"
+        },
+        {
+          "labelEl": "Όχι",
+          "labelEn": "No",
+          "nextId": "accounting-eshop-medium"
+        }
+      ]
+    },
+    {
+      "id": "eshop-ppd-large",
+      "type": "question",
+      "titleEl": "Χρησιμοποιείτε PPD;",
+      "titleEn": "Do you use PPD?",
+      "bodyEl": "PPD = παραγγελία από τρίτη χώρα που αποστέλλεται σε άλλη τρίτη χώρα (π.χ. Κίνα → ΗΠΑ μέσω Amazon).",
+      "bodyEn": "PPD = order from one third country shipped to another (e.g. China → US via Amazon).",
+      "choices": [
+        {
+          "labelEl": "Ναι — PPD",
+          "labelEn": "Yes — PPD",
+          "nextId": "accounting-eshop-large-ppd"
+        },
+        {
+          "labelEl": "Όχι",
+          "labelEn": "No",
+          "nextId": "accounting-eshop-large"
+        }
+      ]
+    },
+    {
+      "id": "formation",
+      "type": "result",
+      "pricingKey": "formation",
+      "titleEl": "Ίδρυση Εταιρείας — all‑inclusive",
+      "titleEn": "Company Formation — all-inclusive"
+    },
+    {
+      "id": "accounting-services-1-3",
+      "type": "result",
+      "pricingKey": "accounting-services-1-3",
+      "titleEl": "Λογιστική · Υπηρεσίες 1–3 τιμολόγια",
+      "titleEn": "Accounting · Services 1–3 invoices"
+    },
+    {
+      "id": "accounting-services-3-20",
+      "type": "result",
+      "pricingKey": "accounting-services-3-20",
+      "titleEl": "Λογιστική · Υπηρεσίες 3–20 τιμολόγια",
+      "titleEn": "Accounting · Services 3–20 invoices"
+    },
+    {
+      "id": "accounting-commercial-eu-le20",
+      "type": "result",
+      "pricingKey": "accounting-commercial-eu-le20",
+      "titleEl": "Λογιστική · Εμπόριο ΕΕ (έως 20 τιμ.)",
+      "titleEn": "Accounting · EU trade (up to 20 inv.)"
+    },
+    {
+      "id": "accounting-commercial-eu-le20-intrastat",
+      "type": "result",
+      "pricingKey": "accounting-commercial-eu-le20-intrastat",
+      "titleEl": "Λογιστική · Εμπόριο ΕΕ + Intrastat",
+      "titleEn": "Accounting · EU trade + Intrastat"
+    },
+    {
+      "id": "accounting-commercial-eu-gt20",
+      "type": "result",
+      "pricingKey": "accounting-commercial-eu-gt20",
+      "titleEl": "Λογιστική · Εμπόριο ΕΕ (20+ τιμ.)",
+      "titleEn": "Accounting · EU trade (20+ inv.)"
+    },
+    {
+      "id": "accounting-commercial-eu-gt20-intrastat",
+      "type": "result",
+      "pricingKey": "accounting-commercial-eu-gt20-intrastat",
+      "titleEl": "Λογιστική · Εμπόριο ΕΕ 20+ + Intrastat",
+      "titleEn": "Accounting · EU trade 20+ + Intrastat"
+    },
+    {
+      "id": "accounting-eshop-small",
+      "type": "result",
+      "pricingKey": "accounting-eshop-small",
+      "titleEl": "Λογιστική · E‑shop μικρό",
+      "titleEn": "Accounting · Small e-shop"
+    },
+    {
+      "id": "accounting-eshop-small-ppd",
+      "type": "result",
+      "pricingKey": "accounting-eshop-small-ppd",
+      "titleEl": "Λογιστική · E‑shop μικρό + PPD",
+      "titleEn": "Accounting · Small e-shop + PPD"
+    },
+    {
+      "id": "accounting-eshop-medium",
+      "type": "result",
+      "pricingKey": "accounting-eshop-medium",
+      "titleEl": "Λογιστική · E‑shop μεσαίο",
+      "titleEn": "Accounting · Medium e-shop"
+    },
+    {
+      "id": "accounting-eshop-medium-ppd",
+      "type": "result",
+      "pricingKey": "accounting-eshop-medium-ppd",
+      "titleEl": "Λογιστική · E‑shop μεσαίο + PPD",
+      "titleEn": "Accounting · Medium e-shop + PPD"
+    },
+    {
+      "id": "accounting-eshop-large",
+      "type": "result",
+      "pricingKey": "accounting-eshop-large",
+      "titleEl": "Λογιστική · E‑shop μεγάλο",
+      "titleEn": "Accounting · Large e-shop"
+    },
+    {
+      "id": "accounting-eshop-large-ppd",
+      "type": "result",
+      "pricingKey": "accounting-eshop-large-ppd",
+      "titleEl": "Λογιστική · E‑shop μεγάλο + PPD",
+      "titleEn": "Accounting · Large e-shop + PPD"
+    },
+    {
+      "id": "accounting-import-export",
+      "type": "result",
+      "pricingKey": "accounting-import-export",
+      "titleEl": "Λογιστική · Import / Export",
+      "titleEn": "Accounting · Import / Export"
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+# TaxBG services site — isolated VPS stack under /opt/taxbg
+# n8n already runs at agents.taxbg.eu — wire webhooks in .env only
+#
+# Deploy:
+#   git clone https://github.com/pkorfoxyliotis-dev/taxbg.git /opt/taxbg
+#   cd /opt/taxbg && cp .env.example .env
+#   docker compose -p taxbg up -d
+
+name: taxbg
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:-https://taxbg.eu}
+        NEXT_PUBLIC_GOOGLE_MAPS_API_KEY: ${NEXT_PUBLIC_GOOGLE_MAPS_API_KEY:-}
+        NEXT_PUBLIC_GOOGLE_BUSINESS_URL: ${NEXT_PUBLIC_GOOGLE_BUSINESS_URL:-https://share.google/CTgF9iBOw1g9gUnbZ}
+        NEXT_PUBLIC_RECAPTCHA_SITE_KEY: ${NEXT_PUBLIC_RECAPTCHA_SITE_KEY:-}
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      NODE_ENV: production
+      AGENT_CHAT_URL: ${AGENT_CHAT_URL:-https://agents.taxbg.eu/webhook/taxbg/chat}
+      AGENT_LEAD_WEBHOOK_URL: ${AGENT_LEAD_WEBHOOK_URL:-https://agents.taxbg.eu/webhook/taxbg/lead}
+      AGENT_API_KEY: ${AGENT_API_KEY:-}
+      STRIPE_SECRET_KEY: ${STRIPE_SECRET_KEY:-}
+      STRIPE_WEBHOOK_SECRET: ${STRIPE_WEBHOOK_SECRET:-}
+      GOOGLE_MAPS_API_KEY: ${GOOGLE_MAPS_API_KEY:-}
+      GOOGLE_PLACE_ID: ${GOOGLE_PLACE_ID:-}
+      REVIEWS_SYNC_SECRET: ${REVIEWS_SYNC_SECRET:-}
+      RECAPTCHA_SECRET_KEY: ${RECAPTCHA_SECRET_KEY:-}
+    ports:
+      - "127.0.0.1:3010:3000"

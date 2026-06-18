@@ -1,5 +1,6 @@
 import type { Metadata } from "next"
 import { Source_Sans_3, Playfair_Display } from "next/font/google"
+import { GoogleAnalytics } from "@/components/google-analytics"
 import { JsonLd } from "@/components/json-ld"
 import { buildPageMetadata, organizationJsonLd, webSiteJsonLd } from "@/lib/seo"
 import "./globals.css"
@@ -38,6 +39,7 @@ export default function RootLayout({
   return (
     <html lang="el" className={`${sourceSans.variable} ${playfair.variable}`}>
       <body className={`${sourceSans.className} min-h-screen flex flex-col`}>
+        <GoogleAnalytics />
         <JsonLd data={[organizationJsonLd(), webSiteJsonLd()]} />
         {children}
       </body>

@@ -3,7 +3,7 @@
 import Link from "next/link"
 import { useEffect, useState } from "react"
 import { legalPath, routes } from "@/content/routes"
-import { readCookieConsent, writeCookieConsent } from "@/lib/cookie-consent"
+import { readCookieConsent, writeCookieConsent, applyAnalyticsConsent } from "@/lib/cookie-consent"
 import { getLocaleFromPathname } from "@/lib/locale"
 import { usePathname } from "next/navigation"
 
@@ -14,13 +14,19 @@ export function CookieBanner() {
   const [visible, setVisible] = useState(false)
 
   useEffect(() => {
-    if (!readCookieConsent()) setVisible(true)
+    const consent = readCookieConsent()
+    if (!consent) {
+      setVisible(true)
+      return
+    }
+    applyAnalyticsConsent(consent === "accepted")
   }, [])
 
   if (!visible) return null
 
   function accept(level: "accepted" | "essential") {
     writeCookieConsent(level)
+    applyAnalyticsConsent(level === "accepted")
     setVisible(false)
   }
 

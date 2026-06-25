@@ -1,16 +1,13 @@
 import { createHash, randomBytes } from "node:crypto"
 import bcrypt from "bcryptjs"
+import { cookies } from "next/headers"
 import { db } from "@/lib/db"
+import { GREEK_ALIAS_REGEX, isValidGreekAlias } from "@/lib/alias"
+
+export { GREEK_ALIAS_REGEX, isValidGreekAlias }
 
 export const SESSION_COOKIE = "taxbg_session"
 const SESSION_TTL_DAYS = 30
-
-/** Members pick an alias in Greek script only — letters, digits, underscore. */
-export const GREEK_ALIAS_REGEX = /^[Α-Ωα-ωΆΈΉΊΌΎΏάέήίόύώϊϋΐΰ0-9_]{2,32}$/
-
-export function isValidGreekAlias(alias: string): boolean {
-  return GREEK_ALIAS_REGEX.test(alias)
-}
 
 export async function hashPassword(password: string): Promise<string> {
   return bcrypt.hash(password, 12)
@@ -70,6 +67,14 @@ export async function getMemberBySessionToken(
 export async function revokeSession(token: string): Promise<void> {
   const tokenHash = hashToken(token)
   await db().query("delete from sessions where token_hash = $1", [tokenHash])
+}
+
+/** Server Components / Route Handlers only — reads the httpOnly session cookie directly. */
+export async function getCurrentMember(): Promise<Member | null> {
+  const store = await cookies()
+  const token = store.get(SESSION_COOKIE)?.value
+  if (!token) return null
+  return getMemberBySessionToken(token)
 }
 
 export async function findMemberByEmail(email: string): Promise<

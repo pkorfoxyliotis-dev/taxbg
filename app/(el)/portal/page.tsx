@@ -1,8 +1,12 @@
 import type { Metadata } from "next"
-import Link from "next/link"
+import { GoogleSigninButton } from "@/components/auth/google-signin-button"
+import { LoginForm } from "@/components/auth/login-form"
+import { SignupForm } from "@/components/auth/signup-form"
 import { ClientPlatformShowcase } from "@/components/client-platform-showcase"
+import { PortalDashboard } from "@/components/portal-dashboard"
 import { platformCopy } from "@/content/client-platform"
 import { pathFor, routes } from "@/content/routes"
+import { getCurrentMember } from "@/lib/auth"
 import { buildPageMetadata } from "@/lib/seo"
 
 export const metadata: Metadata = buildPageMetadata({
@@ -13,7 +17,12 @@ export const metadata: Metadata = buildPageMetadata({
   alternatePath: `/en/${routes.portal.en}`,
 })
 
-export default function PortalPage() {
+export default async function PortalPage() {
+  const member = await getCurrentMember()
+  if (member) {
+    return <PortalDashboard member={member} locale="el" />
+  }
+
   const copy = platformCopy("el")
 
   return (
@@ -29,29 +38,20 @@ export default function PortalPage() {
       <ClientPlatformShowcase locale="el" showCta={false} compact />
 
       <section className="section">
-        <div className="guide-card" style={{ maxWidth: "640px", margin: "0 auto" }}>
-          <h2 style={{ fontSize: "1.35rem", marginBottom: "1rem", color: "var(--navy)" }}>
-            Σύνδεση πελατών
+        <div className="guide-card" style={{ maxWidth: "420px", margin: "0 auto 2rem" }}>
+          <h2 style={{ fontSize: "1.2rem", marginBottom: "1rem", color: "var(--navy)" }}>
+            Σύνδεση
           </h2>
-          <p className="prose-muted" style={{ marginBottom: "1.25rem" }}>
-            Η πύλη ενεργοποιείται αυτόματα με τη συνδρομή λογιστικής. Οι
-            υπάρχοντες πελάτες λαμβάνουν πρόσβαση μέσω ασφαλούς σύνδεσης —
-            επικοινωνήστε μαζί μας για ενεργοποίηση λογαριασμού.
-          </p>
-          <ul className="feature-list">
-            <li>Δωρεάν τιμολόγηση — χωρίς ξεχωριστό κόστος</li>
-            <li>Φωτογραφία παραστατικού από κινητό → AI agent</li>
-            <li>Email τιμολογίων & τραπεζικών → αυτόματη καταχώρηση</li>
-            <li>Παρακολούθηση υποχρεώσεων ΝΑΠ σε πραγματικό χρόνο</li>
-          </ul>
-          <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap", marginTop: "1.5rem" }}>
-            <Link href={pathFor(routes.contact)} className="btn-primary">
-              Ενεργοποίηση πρόσβασης
-            </Link>
-            <Link href="/υπηρεσίες/λογιστική-βουλγαρία" className="btn-secondary">
-              Πακέτα λογιστικής
-            </Link>
+          <LoginForm locale="el" />
+          <div style={{ marginTop: "1rem" }}>
+            <GoogleSigninButton locale="el" />
           </div>
+        </div>
+        <div className="guide-card" style={{ maxWidth: "420px", margin: "0 auto" }}>
+          <h2 style={{ fontSize: "1.2rem", marginBottom: "1rem", color: "var(--navy)" }}>
+            Δημιουργία λογαριασμού
+          </h2>
+          <SignupForm locale="el" />
         </div>
       </section>
     </>

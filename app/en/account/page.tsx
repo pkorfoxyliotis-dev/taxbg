@@ -1,8 +1,12 @@
 import type { Metadata } from "next"
-import Link from "next/link"
+import { GoogleSigninButton } from "@/components/auth/google-signin-button"
+import { LoginForm } from "@/components/auth/login-form"
+import { SignupForm } from "@/components/auth/signup-form"
 import { ClientPlatformShowcase } from "@/components/client-platform-showcase"
+import { PortalDashboard } from "@/components/portal-dashboard"
 import { platformCopy } from "@/content/client-platform"
 import { pathFor, routes } from "@/content/routes"
+import { getCurrentMember } from "@/lib/auth"
 import { buildPageMetadata } from "@/lib/seo"
 
 export const metadata: Metadata = buildPageMetadata({
@@ -14,7 +18,12 @@ export const metadata: Metadata = buildPageMetadata({
   alternatePath: pathFor(routes.portal),
 })
 
-export default function EnPortalPage() {
+export default async function EnPortalPage() {
+  const member = await getCurrentMember()
+  if (member) {
+    return <PortalDashboard member={member} locale="en" />
+  }
+
   const copy = platformCopy("en")
 
   return (
@@ -30,18 +39,20 @@ export default function EnPortalPage() {
       <ClientPlatformShowcase locale="en" showCta={false} compact />
 
       <section className="section">
-        <div className="guide-card" style={{ maxWidth: "640px", margin: "0 auto" }}>
-          <h2 style={{ fontSize: "1.35rem", marginBottom: "1rem", color: "var(--navy)" }}>
-            Client access
+        <div className="guide-card" style={{ maxWidth: "420px", margin: "0 auto 2rem" }}>
+          <h2 style={{ fontSize: "1.2rem", marginBottom: "1rem", color: "var(--navy)" }}>
+            Log in
           </h2>
-          <p className="prose-muted" style={{ marginBottom: "1.25rem" }}>
-            The portal is included with your accounting subscription. Existing
-            clients receive secure login credentials — contact us to activate
-            your account.
-          </p>
-          <Link href={pathFor(routes.contact, "en")} className="btn-primary">
-            Request access
-          </Link>
+          <LoginForm locale="en" />
+          <div style={{ marginTop: "1rem" }}>
+            <GoogleSigninButton locale="en" />
+          </div>
+        </div>
+        <div className="guide-card" style={{ maxWidth: "420px", margin: "0 auto" }}>
+          <h2 style={{ fontSize: "1.2rem", marginBottom: "1rem", color: "var(--navy)" }}>
+            Create account
+          </h2>
+          <SignupForm locale="en" />
         </div>
       </section>
     </>

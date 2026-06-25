@@ -118,7 +118,7 @@ export async function POST(req: NextRequest) {
           tierId,
           amountEur: (invoice.amount_paid ?? 0) / 100,
           status: "paid",
-          stripePaymentId: invoice.id,
+          stripePaymentId: invoice.id ?? null,
         })
         break
       }

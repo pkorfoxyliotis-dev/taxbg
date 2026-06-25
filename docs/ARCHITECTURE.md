@@ -87,8 +87,11 @@ Webhook body from storefront:
 ## Subscriptions & payments
 
 - **10% discount** on annual accounting prepayment (`ADVANCE_PAYMENT_DISCOUNT` in `content/services.ts`)
-- **Payment links** via `POST /api/payments/create-link` (Stripe, Bearer `AGENT_API_KEY`)
-- **Client portal** at `/λογαριασμός` — placeholder; Stripe Customer Portal next phase
+- **Payment links** via `POST /api/payments/create-link` (Stripe, Bearer `AGENT_API_KEY`) — for ad-hoc/owner-initiated charges, not tied to a member account
+- **Member checkout** via `POST /api/payments/checkout-session` (requires logged-in member) — `tier.period === "once"` creates a one-time Checkout Session, `"month"/"year"` creates a subscription. Triggered from `components/checkout-button.tsx` on the pricing table.
+- **Webhook** at `POST /api/payments/webhook` — verifies `STRIPE_WEBHOOK_SECRET`, handles `checkout.session.completed`, `customer.subscription.updated/deleted`, `invoice.paid`. Writes to `subscriptions`/`orders`/`notifications` via `lib/billing-data.ts` (write-only; `lib/member-data.ts` stays read-only for member-facing routes — that split is deliberate, only the webhook handler can mutate billing state).
+- **Stripe Dashboard setup needed:** add an endpoint at `https://taxbg.eu/api/payments/webhook` listening for `checkout.session.completed`, `customer.subscription.updated`, `customer.subscription.deleted`, `invoice.paid` — copy the signing secret into `STRIPE_WEBHOOK_SECRET`.
+- **Client portal** at `/λογαριασμός` — real login/signup/dashboard now (see below), no Stripe Customer Portal self-service yet (members can't self-cancel/update payment method).
 
 ## Client portal & member auth
 

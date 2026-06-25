@@ -1,4 +1,5 @@
 import Link from "next/link"
+import { CheckoutButton } from "@/components/checkout-button"
 import { OpenAgentButton } from "@/components/open-agent-button"
 import { services } from "@/content/services"
 import { pathFor, routes } from "@/content/routes"
@@ -65,6 +66,7 @@ export function PricingTable({ locale = "el" }: { locale?: Locale }) {
                     <Link href={pathFor(routes.guide, locale)} className="btn-ghost">
                       {isEn ? "Price wizard" : "Εκτίμηση τιμής"}
                     </Link>
+                    <CheckoutButton serviceId={service.id} tierId={tier.id} locale={locale} />
                   </div>
                 </div>
               )

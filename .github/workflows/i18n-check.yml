@@ -1,0 +1,16 @@
+name: i18n translation drift check
+
+on:
+  push:
+    paths:
+      - "content/**"
+  pull_request:
+    paths:
+      - "content/**"
+
+jobs:
+  check-translations:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: node scripts/check-translations.mjs

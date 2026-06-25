@@ -49,6 +49,16 @@ export const routes = {
     el: "άρθρα",
     en: "articles",
   },
+  faq: {
+    key: "faq",
+    el: "συχνές-ερωτήσεις",
+    en: "faq",
+  },
+  taxResidencyChange: {
+    key: "taxResidencyChange",
+    el: "αλλαγή-φορολογικής-κατοικίας",
+    en: "tax-residency-change",
+  },
   legal: {
     privacy: {
       key: "privacy",
@@ -89,33 +99,47 @@ export const legalNavItems = [
   { ...routes.legal.gdpr, labelEl: "GDPR", labelEn: "GDPR" },
 ] as const
 
-export type Locale = "el" | "en"
+/**
+ * Greek is canonical at root. Every other locale lives under its own prefix
+ * (/en, /bg, /de), mirroring how /en already works. bg/de slugs and page
+ * content are not built yet — see migration/i18n-bg-de.md for the checklist.
+ */
+export type Locale = "el" | "en" | "bg" | "de"
+const NON_DEFAULT_LOCALES = ["en", "bg", "de"] as const
 
-export function pathFor(
-  segment: { el: string; en: string },
-  locale: Locale = "el"
-): string {
-  if (locale === "en") return `/en/${segment.en}`
-  return `/${segment.el}`
+type LocalizedSegment = { el: string; en: string; bg?: string; de?: string }
+
+function slugFor(segment: LocalizedSegment, locale: Locale): string {
+  if (locale === "el") return segment.el
+  return segment[locale] ?? segment.en
 }
 
-/** Legal pages — English uses /en/legal/{key} for stable routing */
+export function pathFor(segment: LocalizedSegment, locale: Locale = "el"): string {
+  if (locale === "el") return `/${segment.el}`
+  return `/${locale}/${slugFor(segment, locale)}`
+}
+
+/** Legal pages — non-Greek locales use /{locale}/legal/{key} for stable routing */
 export function legalPath(
-  item: { key: string; el: string; en: string },
+  item: { key: string; el: string; en: string; bg?: string; de?: string },
   locale: Locale = "el"
 ): string {
-  if (locale === "en") return `/en/legal/${item.key}`
-  return `/${item.el}`
+  if (locale === "el") return `/${item.el}`
+  return `/${locale}/legal/${item.key}`
 }
 
-export function servicePath(
-  service: { el: string; en: string },
-  locale: Locale = "el"
-): string {
+export function servicePath(service: LocalizedSegment, locale: Locale = "el"): string {
   const base = pathFor(routes.services, locale)
-  const slug = locale === "en" ? service.en : service.el
-  return `${base}/${slug}`
+  return `${base}/${slugFor(service, locale)}`
 }
+
+/** Articles live at the top level (not under /blog/) so old WP URLs keep working as-is. */
+export function articlePath(article: LocalizedSegment, locale: Locale = "el"): string {
+  if (locale === "el") return `/${article.el}`
+  return `/${locale}/blog/${slugFor(article, locale)}`
+}
+
+export { NON_DEFAULT_LOCALES }
 
 /** Greek public segment → internal ASCII route */
 export const greekToInternal: Record<string, string> = {
@@ -128,6 +152,9 @@ export const greekToInternal: Record<string, string> = {
   [routes.contact.el]: "/contact",
   [routes.portal.el]: "/portal",
   [routes.blog.el]: "/blog",
+  [routes.faq.el]: "/faq",
+  [routes.taxResidencyChange.el]: "/tax-residency-change",
+  ["φορολογία-στη-βουλγαρία"]: "/blog/tax-in-bulgaria",
   [routes.legal.privacy.el]: "/legal/privacy",
   [routes.legal.terms.el]: "/legal/terms",
   [routes.legal.termsOfUse.el]: "/legal/termsOfUse",
@@ -148,6 +175,9 @@ export function allGreekPaths(): string[] {
     pathFor(routes.contact),
     pathFor(routes.portal),
     pathFor(routes.blog),
+    pathFor(routes.faq),
+    pathFor(routes.taxResidencyChange),
+    "/φορολογία-στη-βουλγαρία",
     pathFor(routes.legal.privacy),
     pathFor(routes.legal.terms),
     pathFor(routes.legal.termsOfUse),

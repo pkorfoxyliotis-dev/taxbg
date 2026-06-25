@@ -89,9 +89,13 @@ export const identity = {
     llms_txt: "/llms.txt",
     llms_full_txt: "/llms_full.txt",
     identity_json: "/identity.json",
+    agent_info_json: "/agent-info.json",
     site_tree: "/agent/site-tree.json",
     capabilities: "/agent/capabilities.json",
     guide: "/agent/guide.json",
+    services_catalog: "/agent/services-catalog.json",
+    registry: "/agent/registry.json",
+    trust: "/agent/trust.json",
   },
   dataProcessing: {
     chatRetention:

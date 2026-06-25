@@ -1,17 +1,10 @@
-import { agentApiKey } from "@/lib/agent-env"
+import { isValidAgentBearer } from "@/lib/agent-api-auth"
 import {
   RECAPTCHA_CONTACT_ACTION,
   verifyRecaptchaEnterpriseToken,
 } from "@/lib/recaptcha-enterprise"
 import { submitLead } from "@/lib/submit-lead"
 import { NextRequest, NextResponse } from "next/server"
-
-function isTrustedCaller(req: NextRequest): boolean {
-  const secret = agentApiKey()
-  if (!secret) return false
-  const auth = req.headers.get("authorization")?.replace(/^Bearer\s+/i, "")
-  return auth === secret
-}
 
 export async function POST(req: NextRequest) {
   const contentType = req.headers.get("content-type") ?? ""
@@ -43,7 +36,7 @@ export async function POST(req: NextRequest) {
     locale = String(form.get("locale") ?? "").trim()
   }
 
-  if (!isTrustedCaller(req)) {
+  if (!isValidAgentBearer(req)) {
     const recaptcha = await verifyRecaptchaEnterpriseToken(
       recaptchaToken,
       RECAPTCHA_CONTACT_ACTION

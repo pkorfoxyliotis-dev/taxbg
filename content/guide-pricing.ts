@@ -1,3 +1,5 @@
+import type { Locale } from "@/content/routes"
+
 /** Indicative EUR ranges per wizard result — agent confirms final quote. */
 export type GuidePriceProfile = {
   labelEl: string
@@ -141,7 +143,7 @@ export const guidePricing: Record<string, GuidePriceProfile> = {
 
 export function guidePriceRange(
   key: string,
-  locale: "el" | "en",
+  locale: Locale,
   options?: { includesFormation?: boolean }
 ): {
   lines: { label: string; low: string; high: string; period: string; note?: string }[]

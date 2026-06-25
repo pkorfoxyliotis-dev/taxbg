@@ -3,6 +3,7 @@ import {
   getServiceById,
   type ServiceTier,
 } from "@/content/services"
+import type { Locale } from "@/content/routes"
 
 export type PriceQuote = {
   tierId: string
@@ -16,8 +17,15 @@ export type PriceQuote = {
   labelEn: string
 }
 
-export function formatEur(amount: number, locale: "el" | "en" = "el"): string {
-  return new Intl.NumberFormat(locale === "en" ? "en-GB" : "el-GR", {
+const INTL_LOCALE: Record<Locale, string> = {
+  el: "el-GR",
+  en: "en-GB",
+  bg: "bg-BG",
+  de: "de-DE",
+}
+
+export function formatEur(amount: number, locale: Locale = "el"): string {
+  return new Intl.NumberFormat(INTL_LOCALE[locale], {
     style: "currency",
     currency: "EUR",
     minimumFractionDigits: 0,
@@ -59,7 +67,7 @@ export function quoteTier(
 export function quoteRange(
   serviceId: string,
   tierId: string,
-  locale: "el" | "en" = "el"
+  locale: Locale = "el"
 ): { low: string; high: string; mid: string } | null {
   const quote = quoteTier(serviceId, tierId)
   if (!quote) return null

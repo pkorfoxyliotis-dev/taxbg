@@ -1,4 +1,5 @@
 import { company } from "@/content/company"
+import type { Locale } from "@/content/routes"
 
 /** Browser Maps Embed API — exposed via NEXT_PUBLIC_ */
 export function publicMapsApiKey(): string {
@@ -22,7 +23,7 @@ export function hasPublicMapsKey(): boolean {
   return publicMapsApiKey().length > 0
 }
 
-export function formattedAddress(locale: "el" | "en" = "el"): string {
+export function formattedAddress(locale: Locale = "el"): string {
   const a = company.address
   if (locale === "en") {
     return `${a.streetEn}, ${a.postalCode} ${a.localityEn}, ${a.regionEn}, ${a.countryNameEn}`
@@ -37,7 +38,7 @@ export function mapsSearchQuery(): string {
 }
 
 /** Works without API key — contact page map (localhost + live). */
-export function mapsEmbedUrl(locale: "el" | "en" = "el"): string {
+export function mapsEmbedUrl(locale: Locale = "el"): string {
   const { latitude, longitude } = company.geo
   const hl = locale === "en" ? "en" : "el"
   const label = encodeURIComponent(
@@ -47,7 +48,7 @@ export function mapsEmbedUrl(locale: "el" | "en" = "el"): string {
 }
 
 /** Optional when Maps Embed API + key are configured. */
-export function mapsEmbedUrlWithApi(locale: "el" | "en" = "el"): string | null {
+export function mapsEmbedUrlWithApi(locale: Locale = "el"): string | null {
   const key = publicMapsApiKey()
   if (!key) return null
   const q = mapsSearchQuery()

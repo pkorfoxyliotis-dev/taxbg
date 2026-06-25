@@ -1,0 +1,29 @@
+{
+  "schema_version": "1.0",
+  "siteId": "taxbg",
+  "agents": [
+    {
+      "id": "taxbg-assistant",
+      "displayName": "Τζένη Καρύδη",
+      "displayNameEn": "Jenny Karidi",
+      "roles": ["public"],
+      "dedicated": true,
+      "note": "Dedicated agent for taxbg.eu only. Do not merge memory/history with other tenants (topenzymes/Marilena, jenny) — avoids long-term memory corruption.",
+      "publicEndpoint": "/api/agent/chat",
+      "knowledgeSync": {
+        "roleFile": "migration/agents/role-taxbg.md",
+        "knowledgeFile": "migration/agents/knowledge-taxbg.md"
+      }
+    }
+  ],
+  "agent_access": {
+    "enabled": true,
+    "require_trust_handshake": false,
+    "log_all_access": true
+  },
+  "machineApi": {
+    "pricing": "/api/pricing",
+    "lead": "/api/agent/lead",
+    "paymentLinks": "/api/payments/create-link"
+  }
+}

@@ -9,6 +9,7 @@
     "postbuild": "node scripts/generate-llms.mjs",
     "start": "next start",
     "lint": "eslint",
+    "i18n:check": "node scripts/check-translations.mjs",
     "agent:llms": "node scripts/generate-llms.mjs",
     "images:sliders": "node scripts/optimize-slider-images.mjs",
     "reviews:import": "node scripts/import-published-reviews.mjs",

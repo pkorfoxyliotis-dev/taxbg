@@ -59,6 +59,11 @@ export const routes = {
     el: "αλλαγή-φορολογικής-κατοικίας",
     en: "tax-residency-change",
   },
+  admin: {
+    key: "admin",
+    el: "διαχείριση",
+    en: "admin",
+  },
   legal: {
     privacy: {
       key: "privacy",
@@ -154,6 +159,7 @@ export const greekToInternal: Record<string, string> = {
   [routes.blog.el]: "/blog",
   [routes.faq.el]: "/faq",
   [routes.taxResidencyChange.el]: "/tax-residency-change",
+  [routes.admin.el]: "/admin",
   ["φορολογία-στη-βουλγαρία"]: "/blog/tax-in-bulgaria",
   [routes.legal.privacy.el]: "/legal/privacy",
   [routes.legal.terms.el]: "/legal/terms",

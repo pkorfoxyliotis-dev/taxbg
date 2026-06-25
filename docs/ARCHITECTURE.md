@@ -114,9 +114,33 @@ Auth (`lib/auth.ts`, `app/api/auth/*`):
   `lib/auth.ts`) — a Google sign-in with no Greek alias hint gets a
   generated placeholder alias the member can change later.
 
-Not yet built: subscriptions/orders/notifications API routes (tables exist,
-no endpoints read/write them yet), and the actual `/λογαριασμός` UI for
-signup/login/dashboard.
+`/λογαριασμός` (`/en/account`) branches on session: real login/signup forms
++ Google sign-in when logged out, a dashboard (subscriptions, order history,
+notifications) when logged in. Read API at `/api/member/{subscriptions,orders,notifications}`.
+
+## Admin command center (`/διαχείριση`)
+
+Separate from member auth entirely — own tables (`admin_users`,
+`admin_sessions`, migration `0003_admin.sql`), own cookie
+(`taxbg_admin_session`), own helper file (`lib/admin-auth.ts`). No public
+signup route exists for admin accounts; create the first one with:
+
+```bash
+node scripts/seed-admin.mjs you@example.com 'a-strong-password' "Your Name"
+```
+
+`/διαχείριση` (and its internal alias `/admin`) is blocked in `robots.ts`
+and marked `noIndex` — not for public access.
+
+Built so far: login, logout, and a dashboard reading real data via
+`lib/admin-data.ts` (member count, active subscriptions, this month's
+orders, recent subscriptions/orders/members — all read-only, cross-member
+queries distinct from the member-scoped `lib/member-data.ts`).
+
+**Not built yet** (from the original spec — don't assume these exist):
+visitor/GA4 analytics, email inbox, to-do list, AI-drafted emails, agent
+interaction logs, subscription edit actions, and the blog CMS with
+AI-assisted SEO. Each is a separate, sizeable piece of work.
 
 **After pulling these changes:** `npm install` (adds `pg`, `bcryptjs` —
 lockfile wasn't regenerated from the VPS since no Node is available there)

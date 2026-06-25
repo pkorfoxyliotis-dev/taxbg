@@ -9,6 +9,23 @@
 name: taxbg
 
 services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-taxbg}
+      POSTGRES_USER: ${POSTGRES_USER:-taxbg}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-change-me}
+    volumes:
+      - taxbg_postgres_data:/var/lib/postgresql/data
+    ports:
+      - "127.0.0.1:5434:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-taxbg}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
   web:
     build:
       context: .
@@ -20,8 +37,15 @@ services:
         NEXT_PUBLIC_RECAPTCHA_SITE_KEY: ${NEXT_PUBLIC_RECAPTCHA_SITE_KEY:-}
     restart: unless-stopped
     env_file: .env
+    depends_on:
+      db:
+        condition: service_healthy
     environment:
       NODE_ENV: production
+      DATABASE_URL: ${DATABASE_URL:-postgres://taxbg:change-me@db:5432/taxbg}
+      SESSION_SECRET: ${SESSION_SECRET:-}
+      GOOGLE_OAUTH_CLIENT_ID: ${GOOGLE_OAUTH_CLIENT_ID:-}
+      GOOGLE_OAUTH_CLIENT_SECRET: ${GOOGLE_OAUTH_CLIENT_SECRET:-}
       AGENT_CHAT_URL: ${AGENT_CHAT_URL:-https://agents.taxbg.eu/webhook/taxbg/chat}
       AGENT_LEAD_WEBHOOK_URL: ${AGENT_LEAD_WEBHOOK_URL:-https://agents.taxbg.eu/webhook/taxbg/lead}
       AGENT_API_KEY: ${AGENT_API_KEY:-}
@@ -33,3 +57,6 @@ services:
       RECAPTCHA_SECRET_KEY: ${RECAPTCHA_SECRET_KEY:-}
     ports:
       - "127.0.0.1:3010:3000"
+
+volumes:
+  taxbg_postgres_data:

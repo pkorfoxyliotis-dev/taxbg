@@ -90,6 +90,35 @@ Webhook body from storefront:
 - **Payment links** via `POST /api/payments/create-link` (Stripe, Bearer `AGENT_API_KEY`)
 - **Client portal** at `/λογαριασμός` — placeholder; Stripe Customer Portal next phase
 
+## Client portal & member auth
+
+Own dedicated Postgres (`docker-compose.yml` service `db`, port `127.0.0.1:5434`,
+volume `taxbg_postgres_data`) — not shared with topenzymes' Postgres or any
+other stack. Schema in `migrations/0001_init.sql`, applied via
+`npm run db:migrate` (plain SQL + `scripts/migrate.mjs`, no ORM).
+
+Tables: `members`, `oauth_identities`, `sessions`, `subscriptions`, `orders`,
+`notifications`.
+
+Auth (`lib/auth.ts`, `app/api/auth/*`):
+- Email + password — bcrypt hash, 30-day DB-backed session token in an
+  httpOnly cookie (`taxbg_session`), hashed again with `SESSION_SECRET`
+  before storage so a DB dump alone doesn't yield usable tokens.
+- Google OAuth (`/api/auth/google/start` → `/api/auth/google/callback`) —
+  plain `fetch` against Google's OAuth2 endpoints, no auth library.
+  Requires `GOOGLE_OAUTH_CLIENT_ID` / `GOOGLE_OAUTH_CLIENT_SECRET`.
+- **Member alias is Greek-script only** (`GREEK_ALIAS_REGEX` in
+  `lib/auth.ts`) — a Google sign-in with no Greek alias hint gets a
+  generated placeholder alias the member can change later.
+
+Not yet built: subscriptions/orders/notifications API routes (tables exist,
+no endpoints read/write them yet), and the actual `/λογαριασμός` UI for
+signup/login/dashboard.
+
+**After pulling these changes:** `npm install` (adds `pg`, `bcryptjs` —
+lockfile wasn't regenerated from the VPS since no Node is available there)
+and `npm run db:migrate` before first deploy.
+
 ## VPS deploy
 
 ```bash
@@ -97,6 +126,7 @@ git clone https://github.com/pkorfoxyliotis-dev/taxbg.git /opt/taxbg
 cd /opt/taxbg
 cp .env.example .env   # fill on server
 docker compose -p taxbg up -d --build
+npm run db:migrate      # first deploy only, or after new migrations
 ```
 
 Nginx: proxy `taxbg.eu` → `127.0.0.1:3010`. Do not touch `/opt/jenny` or other stacks.

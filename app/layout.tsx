@@ -1,5 +1,5 @@
 import type { Metadata } from "next"
-import { Source_Sans_3, Playfair_Display } from "next/font/google"
+import { Fraunces, Inter, JetBrains_Mono } from "next/font/google"
 import { GoogleAnalytics } from "@/components/google-analytics"
 import { JsonLd } from "@/components/json-ld"
 import { buildPageMetadata, organizationJsonLd, webSiteJsonLd } from "@/lib/seo"
@@ -7,15 +7,24 @@ import "./globals.css"
 
 export const dynamic = "force-dynamic"
 
-const sourceSans = Source_Sans_3({
+const inter = Inter({
   subsets: ["latin", "greek", "latin-ext"],
   variable: "--font-source-sans",
   display: "swap",
 })
 
-const playfair = Playfair_Display({
+// Fraunces has no Greek glyphs — Greek headline text falls back to the
+// browser's default serif, which is the intended look (matches the real
+// mockup at /opt/Taxbg/mockups/index.html, which relies on the same fallback).
+const fraunces = Fraunces({
   subsets: ["latin", "latin-ext"],
   variable: "--font-playfair",
+  display: "swap",
+})
+
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ["latin", "latin-ext"],
+  variable: "--font-mono",
   display: "swap",
 })
 
@@ -37,8 +46,8 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="el" className={`${sourceSans.variable} ${playfair.variable}`}>
-      <body className={`${sourceSans.className} min-h-screen flex flex-col`}>
+    <html lang="el" className={`${inter.variable} ${fraunces.variable} ${jetbrainsMono.variable}`}>
+      <body className={`${inter.className} min-h-screen flex flex-col`}>
         <GoogleAnalytics />
         <JsonLd data={[organizationJsonLd(), webSiteJsonLd()]} />
         {children}

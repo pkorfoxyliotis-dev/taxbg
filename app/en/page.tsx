@@ -2,9 +2,8 @@ import Link from "next/link"
 import { OpenAgentButton } from "@/components/open-agent-button"
 import { ClientPlatformShowcase } from "@/components/client-platform-showcase"
 import { GoogleReviewsSection } from "@/components/google-reviews-section"
-import { ImageSlider } from "@/components/image-slider"
+import { HomeHero } from "@/components/home-hero"
 import { ServiceCard } from "@/components/service-card"
-import { homeSlides } from "@/content/sliders"
 import { pathFor, routes } from "@/content/routes"
 import { services } from "@/content/services"
 
@@ -13,7 +12,7 @@ export default function EnHomePage() {
 
   return (
     <>
-      <ImageSlider slides={homeSlides} locale="en" variant="hero" />
+      <HomeHero locale="en" />
 
       <ClientPlatformShowcase locale="en" />
 

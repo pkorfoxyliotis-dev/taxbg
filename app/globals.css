@@ -1,36 +1,47 @@
 @import "tailwindcss";
 
+/*
+ * Real design system, ported from /opt/Taxbg/mockups/CLAUDE.md +
+ * index.html (Desktop Claude's actual spec) — true black, dull gold,
+ * editorial dark theme. Variable NAMES kept from the old light theme on
+ * purpose so the ~2200 lines below that reference var(--navy) etc. don't
+ * all need hunting down individually — only the values changed meaning.
+ */
 :root {
-  --bg: #f8fafc;
-  --surface: #ffffff;
-  --ink: #0c1929;
-  --ink-mid: #3d4f63;
-  --ink-muted: #64748b;
-  --line: #e2e8f0;
-  --navy: #0f2b4a;
-  --navy-light: #1a3d66;
-  --gold: #c9a227;
-  --gold-light: #e8c547;
-  --gold-tint: #fef9e7;
-  --accent: #2563eb;
-  --accent-tint: #eff6ff;
-  --success: #059669;
-  --gradient-hero: linear-gradient(
-    135deg,
-    #0f2b4a 0%,
-    #1a3d66 45%,
-    #0f4c6e 100%
-  );
-  --gradient-gold: linear-gradient(135deg, #a67c00, #e8c547);
-  --shadow-sm: 0 2px 8px rgba(15, 43, 74, 0.06);
-  --shadow-md: 0 8px 32px rgba(15, 43, 74, 0.1);
-  --shadow-lg: 0 20px 60px rgba(15, 43, 74, 0.14);
+  --bg: #050505;
+  --surface: #161310;
+  --ink: #ece7dc;
+  --ink-mid: #8a8578;
+  --ink-muted: #5a5650;
+  --line: #2a251f;
+  --navy: #a6884f;
+  --navy-light: #e8c77a;
+  --navy-bg: #0a0a09;
+  --navy-bg-light: #161310;
+  --gold: #e8c77a;
+  --gold-light: #f0d68f;
+  --gold-tint: rgba(232, 199, 122, 0.08);
+  --accent: #5b8fe0;
+  --accent-tint: rgba(91, 143, 224, 0.08);
+  --success: #6fd68a;
+  --rust: #c44b37;
+  --gradient-hero: radial-gradient(
+    120% 140% at 0% 0%,
+    rgba(232, 199, 122, 0.07),
+    transparent 60%
+  ),
+  #050505;
+  --gradient-gold: linear-gradient(135deg, #a6884f, #e8c77a);
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 8px 32px rgba(0, 0, 0, 0.45);
+  --shadow-lg: 0 20px 60px rgba(0, 0, 0, 0.55);
   --radius: 0.75rem;
 }
 
 @theme inline {
   --font-sans: var(--font-source-sans), system-ui, sans-serif;
   --font-display: var(--font-playfair), Georgia, serif;
+  --font-mono-ui: var(--font-mono), monospace;
 }
 
 html {
@@ -52,7 +63,7 @@ a {
 
 /* Header */
 .site-header {
-  background: rgba(255, 255, 255, 0.9);
+  background: rgba(5, 5, 5, 0.86);
   backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--line);
   position: sticky;
@@ -242,7 +253,7 @@ a {
   height: 2.5rem;
   border: 1px solid var(--line);
   border-radius: 0.5rem;
-  background: #fff;
+  background: var(--surface);
   cursor: pointer;
 }
 
@@ -250,8 +261,8 @@ a {
   display: block;
   width: 1.1rem;
   height: 2px;
-  background: var(--navy);
-  box-shadow: 0 -5px 0 var(--navy), 0 5px 0 var(--navy);
+  background: var(--ink);
+  box-shadow: 0 -5px 0 var(--ink), 0 5px 0 var(--ink);
 }
 
 .header-mobile-drawer {
@@ -283,7 +294,7 @@ a {
   right: 0;
   width: min(88vw, 320px);
   height: 100%;
-  background: #fff;
+  background: var(--surface);
   padding: 1rem 1.25rem 1.5rem;
   transform: translateX(100%);
   transition: transform 0.22s ease;
@@ -370,11 +381,12 @@ a {
   font-weight: 600;
   font-size: 0.95rem;
   background: var(--gradient-gold);
-  color: var(--navy);
+  color: #1a1410;
   border: none;
   cursor: pointer;
   box-shadow: 0 4px 16px rgba(201, 162, 39, 0.35);
   transition: transform 0.15s, box-shadow 0.15s;
+  white-space: nowrap;
 }
 
 .btn-primary:hover {
@@ -592,7 +604,7 @@ a {
 
 /* Benefits */
 .benefits-strip {
-  background: var(--navy);
+  background: var(--navy-bg);
   color: #fff;
   padding: 2.5rem 1.5rem;
 }
@@ -740,7 +752,7 @@ a {
 
 /* Footer */
 .site-footer {
-  background: var(--navy);
+  background: var(--navy-bg);
   color: rgba(255, 255, 255, 0.85);
   padding: 3rem 1.5rem 2rem;
   margin-top: auto;
@@ -868,8 +880,8 @@ a {
   width: 3.5rem;
   height: 3.5rem;
   border-radius: 50%;
-  background: var(--gradient-gold);
-  color: var(--navy);
+  background: linear-gradient(135deg, var(--accent) 0%, #3f6fc4 100%);
+  color: #fff;
   border: none;
   cursor: pointer;
   box-shadow: var(--shadow-lg);
@@ -913,12 +925,12 @@ a {
 .agent-embed .agent-messages {
   max-height: 280px;
   min-height: 220px;
-  background: #f1f5f9;
+  background: var(--surface);
 }
 
 .agent-embed .agent-input-row input {
-  border: 2px solid #c5d0dc;
-  background: #fff;
+  border: 2px solid var(--line);
+  background: var(--surface);
 }
 
 /* TaxBG AI chat — panel pattern (like storefront agent widget) */
@@ -937,7 +949,7 @@ a {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  background: var(--navy);
+  background: var(--navy-bg);
   color: #fff;
   border: none;
   border-radius: 999px;
@@ -949,7 +961,7 @@ a {
 }
 
 .agent-chat-fab:hover {
-  background: var(--navy-light);
+  background: var(--accent);
 }
 
 .agent-chat-fab-dot {
@@ -987,7 +999,7 @@ a {
   align-items: start;
   gap: 0.5rem;
   padding: 1rem 1.1rem 0.85rem;
-  background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
+  background: linear-gradient(135deg, var(--accent) 0%, #3f6fc4 100%);
   color: #fff;
   border-bottom: 3px solid var(--gold);
 }
@@ -1037,7 +1049,7 @@ a {
   display: flex;
   flex-direction: column;
   gap: 0.65rem;
-  background: #f1f5f9;
+  background: var(--surface);
   min-height: 200px;
 }
 
@@ -1052,14 +1064,14 @@ a {
 
 .agent-chat-msg-assistant {
   align-self: flex-start;
-  background: #fff;
-  border: 1px solid #d0dae6;
+  background: var(--surface);
+  border: 1px solid var(--line);
   color: var(--ink);
 }
 
 .agent-chat-msg-user {
   align-self: flex-end;
-  background: var(--navy);
+  background: var(--navy-bg);
   color: #fff;
 }
 
@@ -1147,11 +1159,11 @@ a {
 .agent-chat-form input {
   flex: 1;
   padding: 0.65rem 0.9rem;
-  border: 2px solid #c5d0dc;
+  border: 2px solid var(--line);
   border-radius: 999px;
   font-size: 0.88rem;
   outline: none;
-  background: #fff;
+  background: var(--surface);
 }
 
 .agent-chat-form input:focus {
@@ -1167,7 +1179,7 @@ a {
 
 .agent-header {
   padding: 1rem 1.25rem;
-  background: var(--navy);
+  background: var(--navy-bg);
   color: #fff;
 }
 
@@ -1235,7 +1247,7 @@ a {
 .agent-input-row button {
   padding: 0.6rem 1rem;
   border-radius: 999px;
-  background: var(--navy);
+  background: var(--navy-bg);
   color: #fff;
   border: none;
   font-weight: 600;
@@ -1282,11 +1294,11 @@ a {
 .contact-form textarea {
   width: 100%;
   padding: 0.8rem 1rem;
-  border: 2px solid #c5d0dc;
+  border: 2px solid var(--line);
   border-radius: 0.6rem;
   font-size: 0.95rem;
   font-family: inherit;
-  background: #fff;
+  background: var(--surface);
   color: var(--ink);
   box-shadow: inset 0 1px 2px rgba(15, 43, 74, 0.04);
   transition: border-color 0.15s, box-shadow 0.15s;
@@ -1366,7 +1378,7 @@ a {
   position: relative;
   width: 100%;
   overflow: hidden;
-  background: var(--navy);
+  background: var(--navy-bg);
 }
 
 .image-slider--hero {
@@ -1435,9 +1447,9 @@ a {
   display: block;
   padding: 0.45rem 0.65rem 0.5rem;
   border-radius: 0.65rem;
-  background: rgba(255, 255, 255, 0.92);
+  background: rgba(22, 19, 16, 0.92);
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.65);
+  border: 1px solid rgba(232, 199, 122, 0.2);
   box-shadow:
     0 4px 24px rgba(15, 43, 74, 0.22),
     0 0 0 1px rgba(201, 162, 39, 0.12);
@@ -1870,7 +1882,7 @@ a {
   left: 0;
   right: 0;
   z-index: 70;
-  background: var(--navy);
+  background: var(--navy-bg);
   color: #fff;
   padding: 1rem 1.25rem;
   box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.15);
@@ -2276,4 +2288,215 @@ a {
 .grecaptcha-badge {
   visibility: visible !important;
   opacity: 0.92;
+}
+
+/* Home hero — ported from /opt/Taxbg/mockups/index.html, no stock photography */
+.home-hero {
+  position: relative;
+  padding: clamp(2.5rem, 6vw, 6.5rem) 1.5rem clamp(2rem, 5vw, 5rem);
+  background: var(--gradient-hero);
+  border-bottom: 1px solid var(--line);
+}
+
+.home-hero-inner {
+  max-width: 1180px;
+  margin: 0 auto;
+}
+
+.home-eyebrow {
+  font-family: var(--font-mono-ui);
+  font-size: 0.72rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--navy);
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  margin-bottom: 1.5rem;
+}
+
+.home-eyebrow::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--rust);
+  box-shadow: 0 0 0 3px rgba(196, 75, 55, 0.18);
+}
+
+.home-hero-title {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: clamp(2.1rem, 6vw, 4rem);
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+  max-width: 900px;
+  margin-bottom: 1.5rem;
+  color: var(--ink);
+}
+
+.home-hero-title em {
+  font-style: italic;
+  font-weight: 500;
+  color: var(--gold);
+}
+
+.home-hero-sub {
+  font-size: 1.05rem;
+  color: var(--ink-mid);
+  max-width: 560px;
+  margin-bottom: 2.25rem;
+  line-height: 1.65;
+}
+
+.home-hero-ctas {
+  display: flex;
+  gap: 0.85rem;
+  flex-wrap: wrap;
+  margin-bottom: 3rem;
+}
+
+.btn-ghost-dark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 0.75rem 1.5rem;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  border: 1px solid var(--line);
+  color: var(--ink);
+  transition: border-color 0.2s;
+}
+
+.btn-ghost-dark:hover {
+  border-color: var(--navy);
+}
+
+/* Live ledger widget */
+.home-ledger {
+  border: 1px solid var(--line);
+  background: var(--surface);
+  border-radius: 0.5rem;
+  overflow: hidden;
+  max-width: 640px;
+  margin-bottom: 2.25rem;
+}
+
+.home-ledger-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.65rem 1rem;
+  border-bottom: 1px solid var(--line);
+  background: rgba(0, 0, 0, 0.25);
+  font-family: var(--font-mono-ui);
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+}
+
+.home-ledger-status {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.home-ledger-pulse {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--success);
+  box-shadow: 0 0 0 0 rgba(111, 214, 138, 0.5);
+  animation: home-ledger-pulse 2s infinite;
+}
+
+@keyframes home-ledger-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(111, 214, 138, 0.45);
+  }
+  70% {
+    box-shadow: 0 0 0 7px rgba(111, 214, 138, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(111, 214, 138, 0);
+  }
+}
+
+.home-ledger-body {
+  height: 168px;
+  overflow: hidden;
+  padding: 0.4rem 0;
+}
+
+.home-ledger-line {
+  font-family: var(--font-mono-ui);
+  font-size: 0.78rem;
+  color: var(--ink-mid);
+  padding: 0.45rem 1rem;
+  display: flex;
+  gap: 0.6rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+  animation: home-ledger-rise 0.5s ease forwards;
+}
+
+@keyframes home-ledger-rise {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.home-ledger-ok {
+  color: var(--success);
+  flex-shrink: 0;
+}
+
+.home-ledger-ts {
+  color: var(--ink-muted);
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+/* Trust strip */
+.home-trust-strip {
+  display: flex;
+  align-items: center;
+  gap: 1.75rem;
+  max-width: 640px;
+  flex-wrap: wrap;
+}
+
+.home-trust-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.home-trust-num {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.home-trust-out {
+  font-size: 0.85rem;
+  color: var(--ink-muted);
+  font-weight: 400;
+  font-family: var(--font-sans);
+}
+
+.home-trust-label {
+  font-family: var(--font-mono-ui);
+  font-size: 0.66rem;
+  letter-spacing: 0.06em;
+  color: var(--ink-muted);
+  text-transform: uppercase;
 }

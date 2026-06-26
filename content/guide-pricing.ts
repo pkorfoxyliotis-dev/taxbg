@@ -17,8 +17,8 @@ export const guidePricing: Record<string, GuidePriceProfile> = {
   formation: {
     labelEl: "Ίδρυση εταιρείας (all‑inclusive)",
     labelEn: "Company formation (all-inclusive)",
-    lowEur: 890,
-    highEur: 1190,
+    lowEur: 750,
+    highEur: 950,
     period: "once",
     noteEl:
       "Περιλαμβάνει VIES, VAT, τραπεζικό λογαριασμό, AMKA διαχειριστή, ασφαλιστικά ταμεία και πλήρη ενεργοποίηση για τιμολόγηση.",

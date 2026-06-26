@@ -8,21 +8,30 @@ import type { Locale } from "@/content/routes"
 
 export function SiteHeader({ locale = "el" }: { locale?: Locale }) {
   const isEn = locale === "en"
-  const prefix = isEn ? "/en" : ""
+
+  const pricingDropdown = isEn
+    ? [
+        { href: pathFor(routes.costFormation, locale), label: "Company formation cost" },
+        { href: pathFor(routes.costAccounting, locale), label: "Accounting services cost" },
+        { href: pathFor(routes.costClosure, locale), label: "Company closure" },
+        { href: pathFor(routes.costInactive, locale), label: "Inactive company" },
+      ]
+    : [
+        { href: pathFor(routes.costFormation), label: "Κόστος ίδρυσης εταιρείας" },
+        { href: pathFor(routes.costAccounting), label: "Κόστος λογιστικής υποστήριξης" },
+        { href: pathFor(routes.costClosure), label: "Κλείσιμο εταιρείας" },
+        { href: pathFor(routes.costInactive), label: "Ανενεργή εταιρεία" },
+      ]
 
   const navItems = [
     {
-      href: `${prefix}/${isEn ? routes.services.en : routes.services.el}`,
+      href: pathFor(routes.services, locale),
       label: isEn ? "Services" : "Υπηρεσίες",
     },
     {
-      href: `${prefix}/${isEn ? routes.pricing.en : routes.pricing.el}`,
+      href: pathFor(routes.pricing, locale),
       label: isEn ? "Pricing" : "Τιμές",
-    },
-    {
-      href: `${prefix}/${isEn ? routes.guide.en : routes.guide.el}`,
-      label: isEn ? "Price wizard" : "Εκτίμηση τιμής",
-      featured: true,
+      dropdown: pricingDropdown,
     },
   ]
 

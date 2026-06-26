@@ -1,14 +1,57 @@
 "use client"
 
 import Link from "next/link"
-import { useEffect, useId, useState } from "react"
+import { useEffect, useId, useRef, useState } from "react"
 
 import { OpenAgentButton } from "@/components/open-agent-button"
 import { LocaleSwitcher } from "@/components/locale-switcher"
 import { pathFor, routes } from "@/content/routes"
 import type { Locale } from "@/content/routes"
 
-type NavItem = { href: string; label: string; featured?: boolean }
+type DropdownItem = { href: string; label: string }
+type NavItem = { href: string; label: string; featured?: boolean; dropdown?: DropdownItem[] }
+
+function NavDropdown({ item }: { item: NavItem & { dropdown: DropdownItem[] } }) {
+  const [open, setOpen] = useState(false)
+  const ref = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (!open) return
+    const handler = (e: MouseEvent) => {
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false)
+    }
+    document.addEventListener("mousedown", handler)
+    return () => document.removeEventListener("mousedown", handler)
+  }, [open])
+
+  return (
+    <div className="nav-dropdown-wrap" ref={ref}>
+      <button
+        className="nav-dropdown-trigger"
+        onClick={() => setOpen((v) => !v)}
+        aria-expanded={open}
+      >
+        {item.label}
+        <span className="nav-dropdown-caret" aria-hidden>▾</span>
+      </button>
+      {open && (
+        <div className="nav-dropdown-panel" role="menu">
+          {item.dropdown.map((d) => (
+            <Link
+              key={d.href}
+              href={d.href}
+              className="nav-dropdown-item"
+              role="menuitem"
+              onClick={() => setOpen(false)}
+            >
+              {d.label}
+            </Link>
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}
 
 export function SiteHeaderMenu({
   locale,
@@ -39,15 +82,19 @@ export function SiteHeaderMenu({
   return (
     <>
       <nav className="site-nav site-nav--desktop" aria-label={isEn ? "Main menu" : "Κύριο μενού"}>
-        {navItems.map((item) => (
-          <Link
-            key={item.href}
-            href={item.href}
-            className={item.featured ? "nav-featured" : undefined}
-          >
-            {item.label}
-          </Link>
-        ))}
+        {navItems.map((item) =>
+          item.dropdown ? (
+            <NavDropdown key={item.href} item={item as NavItem & { dropdown: DropdownItem[] }} />
+          ) : (
+            <Link
+              key={item.href}
+              href={item.href}
+              className={item.featured ? "nav-featured" : undefined}
+            >
+              {item.label}
+            </Link>
+          )
+        )}
       </nav>
 
       <div className="header-actions">
@@ -88,14 +135,24 @@ export function SiteHeaderMenu({
           <OpenAgentButton locale={locale} className="header-agent-cta--mobile" />
           <nav className="header-mobile-nav">
             {navItems.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={item.featured ? "nav-featured" : undefined}
-                onClick={close}
-              >
-                {item.label}
-              </Link>
+              <div key={item.href}>
+                <Link
+                  href={item.href}
+                  className={item.featured ? "nav-featured" : undefined}
+                  onClick={close}
+                >
+                  {item.label}
+                </Link>
+                {item.dropdown && (
+                  <div className="header-mobile-subnav">
+                    {item.dropdown.map((d) => (
+                      <Link key={d.href} href={d.href} onClick={close}>
+                        {d.label}
+                      </Link>
+                    ))}
+                  </div>
+                )}
+              </div>
             ))}
             <Link href={pathFor(routes.portal, locale)} onClick={close}>
               {isEn ? "Client portal" : "Πύλη πελάτη"}

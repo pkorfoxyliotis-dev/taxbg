@@ -1,12 +1,12 @@
 import type { Metadata } from "next"
-import { PricingTable } from "@/components/pricing-table"
+import { PricingCalculator } from "@/components/pricing-calculator"
 import { pathFor, routes } from "@/content/routes"
 import { buildPageMetadata } from "@/lib/seo"
 
 export const metadata: Metadata = buildPageMetadata({
-  title: "Τιμές — TaxBG",
+  title: "Τιμές — TaxBG.eu",
   description:
-    "Τιμολόγηση ίδρυσης εταιρείας στη Βουλγαρία και λογιστικών συνδρομών. Έκπτωση 10% για ετήσια προπληρωμή.",
+    "Τιμές ίδρυσης εταιρείας στη Βουλγαρία και λογιστικής υποστήριξης. All-inclusive — χωρίς κρυφά κόστη.",
   path: pathFor(routes.pricing),
   alternatePath: `/en/${routes.pricing.en}`,
 })
@@ -17,11 +17,11 @@ export default function PricingPage() {
       <div className="section-head">
         <h1>Τιμές</h1>
         <p>
-          Διαφανείς τιμές για τις κύριες υπηρεσίες μας. Έκπτωση 10% για ετήσια
-          προπληρωμή λογιστικής συνδρομής.
+          Διαλέξτε τι σας ενδιαφέρει. Θα δείτε την τιμή και τι ακριβώς περιλαμβάνεται —
+          χωρίς εκπλήξεις μετά.
         </p>
       </div>
-      <PricingTable locale="el" />
+      <PricingCalculator />
     </section>
   )
 }

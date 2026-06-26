@@ -3039,3 +3039,79 @@ a {
   gap: 0.75rem;
   flex-wrap: wrap;
 }
+
+/* ── Locale Switcher ───────────────────────────────────────────── */
+
+.locale-switcher {
+  position: relative;
+}
+
+.locale-switcher-trigger {
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+  background: none;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  color: var(--ink-muted);
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+  padding: 0.3rem 0.55rem;
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s;
+}
+
+.locale-switcher-trigger:hover {
+  border-color: var(--gold);
+  color: var(--gold);
+}
+
+.locale-caret {
+  font-size: 0.65rem;
+  opacity: 0.6;
+}
+
+.locale-switcher-panel {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  right: 0;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 0.35rem;
+  z-index: 300;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+  min-width: 140px;
+}
+
+.locale-option {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 7px;
+  text-decoration: none;
+  transition: background 0.12s;
+}
+
+.locale-option:hover {
+  background: rgba(232,199,122,0.08);
+}
+
+.locale-option--active {
+  background: rgba(232,199,122,0.12);
+}
+
+.locale-option-code {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--gold);
+  font-weight: 600;
+  width: 24px;
+}
+
+.locale-option-name {
+  font-size: 0.85rem;
+  color: var(--ink-muted);
+}

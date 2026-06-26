@@ -38,24 +38,28 @@ export const routes = {
     key: "kostos-idrusis",
     el: "κόστος-ίδρυσης-εταιρείας-βουλγαρία",
     en: "cost-company-formation-bulgaria",
+    bg: "разходи-регистрация-фирма-българия",
     de: "kosten-firmengruendung-bulgarien",
   },
   costAccounting: {
     key: "kostos-logistikis",
     el: "κόστος-λογιστικής-βουλγαρία",
     en: "accounting-cost-bulgaria",
+    bg: "счетоводни-услуги-цени-българия",
     de: "kosten-buchhaltung-bulgarien",
   },
   costClosure: {
     key: "kleisimo-etaireias",
     el: "κλείσιμο-εταιρείας-βουλγαρία",
     en: "company-closure-bulgaria",
+    bg: "закриване-фирма-българия",
     de: "firmenaufloesung-bulgarien",
   },
   costInactive: {
     key: "anergi-etaireia",
     el: "ανενεργή-εταιρεία-βουλγαρία",
     en: "inactive-company-bulgaria",
+    bg: "неактивна-фирма-българия",
     de: "inaktive-firma-bulgarien",
   },
   contact: {
